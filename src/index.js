@@ -126,8 +126,14 @@ app.get('/', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Vitamin scheduler running on port ${PORT}`);
   console.log('8:00am and 3:00pm reminders scheduled (Europe/London)');
+
+  // Keep alive — ping self every 14 minutes so free tier never sleeps
+  setInterval(() => {
+    fetch('https://vitamin-scheduler.onrender.com/')
+      .then(() => console.log('Keep-alive ping sent'))
+      .catch(() => {});
+  }, 14 * 60 * 1000);
 });
